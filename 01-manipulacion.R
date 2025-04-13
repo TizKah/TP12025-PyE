@@ -10,9 +10,150 @@ attach(datos)
 ######################
 # Renombrar columnas #
 ######################
-colnames(datos) <- c("id","altura","diametro","inclinacion","edad","tiempo",
-										 "brotes","especie","follaje","origen","atracnosis",
-										 "roya","manchas","ampollas")
+colnames(datos) <- c(
+  "orden_inicial",
+  "provincia",
+  "barrio",
+  
+  # Sección 1: Características generales de la composición del hogar
+  "edad_jefe_del_hogar",
+  "años_de_residencia",
+  "núm_integrantes",
+  "núm_familias",
+  "núm_varones",
+  "núm_mujeres",
+  "núm_género_disidente",
+  "núm_menores",
+  "conviven_personas_con_discapacidades",
+  
+  # No se presentan datos para las preguntas de la sección 2...
+  
+  # Sección 3: Hacinamiento
+  "núm_dormitorios",
+  "máx_personas_por_dormitorio",
+  
+  # Sección 4: Propiedad
+  "posee_renabap",
+  "hubo_intento_de_desalojo",
+  "núm_intentos_de_desalojo",
+  "tiempo_desde_último_intento_de_desalojo",
+  "relación_con_propiedad",
+  "tiene_contrato_de_alquiler",
+  "costo_de_alquiler",
+  "aumento_de_alquiler_en_último_año",
+  "porcentaje_de_aumento_de_alquiler",
+  
+  # Sección 5: Agua y saneamiento
+  "suministro_de_agua",
+  "compra_agua_embotellada",
+  "presión_del_agua",
+  "tiene_tanque_de_agua",
+  "litros_tanque",
+  "posee_baño",
+  "lugar_de_higienización",
+  "baños_compartidos_con_otras_familias",
+  "baño_posee_descarga_de_agua",
+  "tipo_de_desagüe",
+  "posee_agua_en_cocina",
+  "tipo_de_agua_caliente_en_cocina",
+  "posee_agua_en_baño",
+  "tipo_de_agua_caliente_en_baño",
+  
+  # Sección 6: Cocina y calefacción
+  "gas_red_cocina",
+  "garrafa_cocina",
+  "electricidad_cocina",
+  "leña_o_carbón_cocina",
+  "no_tiene_cocina",
+  # No aparece una columna para "no necesita cocina"
+  "gas_red_calefacción",
+  "garrafa_calefacción",
+  "electricidad_calefacción",
+  "leña_o_carbón_calefacción",
+  "no_tiene_calefacción",
+  "no_necesita_calefacción",
+  "posee_ventilación_calefacción",
+  
+  # Sección 7: Electricidad
+  "conexión_red_eléctrica",
+  "tendido_eléctrico_en_vivienda",
+  "pérdida_de_electrodomésticos",
+  "incendios_por_instalación_eléctrica",
+  "cortes_frecuentes_electricidad_verano",
+  "cortes_frecuentes_electricidad_invierno",
+  
+  # Sección 8: Conectividad
+  "posee_banda_ancha",
+  "posee_celular_con_datos_móviles",
+  "núm_abonos_datos_móviles",
+  "núm_computadoras",
+  "núm_teléfonos_tablets",
+  
+  # Sección 9: Condiciones materiales de la vivienda
+  "tiene_contrapiso",
+  "material_piso",
+  "material_techo",
+  "techo_aislamiento_térmico",
+  # Hay un serio problema con el contenido de la planilla acá,
+  # los datos se corresponden al material del piso...
+  "puerta_exterior_material1",
+  "puerta_exterior_material2",
+  "puerta_exterior_material3",
+  "puerta_exterior_material4",
+  "material_paredes_exteriores",
+  "paredes_exteriores_tienen_terminación_exterior",
+  "tipo_terminación_exterior",
+  "terminación_de_pintura",
+  "filtraciones_dormitorios",
+  "filtraciones_cocina",
+  "filtraciones_baño",
+  "filtraciones_living",
+  "sin_filtraciones",
+  "filtraciones_otro",
+  "problema_estructural_dormitorios",
+  "problema_estructural_cocina",
+  "problema_estructural_baño",
+  "problema_estructural_living",
+  "sin_problemas_estructurales",
+  "problema_estructural_otro",
+  "trabaja_en_vivienda",
+  "tipo_de_trabajo_en_vivienda",
+  
+  # Sección 10: Servicions barriales
+  "calle_asfaltada",
+  "tiene_salida_a_calle",
+  "hay_veredas",
+  "hay_alumbrado_público",
+  "calificación_arbolado",
+  "hay_plagas",
+  "plaga_cucaracha",
+  "plaga_mosquito",
+  "plaga_rata",
+  
+  # Sección 11: Ambiente
+  "polideportivo_municipal_a_500m",
+  "natatorio_municipal_a_500m",
+  "playón_multiuso_a_500m",
+  "cancha_fútbol_a_500m",
+  "posta_de_ejercicio_a_500m",
+  "skatepark_a_500m",
+  "balneario_a_500m",
+  "sin_espacio_práctica_corporal_a_500m",
+  "otro_espacio_práctica_corporal_a_500m",
+  "frecuencia_uso_espacio_práctica_corporal",
+  "placita_a_500m",
+  "plaza_a_500m",
+  "parque_urbano_a_500m",
+  "sin_espacio_verde_a_500m",
+  "frecuencia_uso_espacio_verde",
+  "frecuencia_tránsito",
+  "frecuencia_tránsito_dispar_entre_día_y_noche",
+  "acceso_a_bicicleta_pública",
+  "hay_basurales_cerca",
+  "hay_cesto_comunitario_en_cuadra",
+  "forma_eliminación_residuos",
+  "frecuencia_recolección_residuos_municipio",
+  "riesgo_inundación")
 
 ###################
 # Modificar datos #
