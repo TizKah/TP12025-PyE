@@ -183,41 +183,37 @@ datos_limpios <- datos %>%
     
     # 2. Tenencia
     relación_con_propiedad = factor(
-      relación_con_propiedad,
-      levels = c(
-        "Propio con algún comprobante de tenencia",
-        "Propio sin títulos",
-        "Alquilado",
-        "Prestado",
-        "Ocupado/Tomado",
-        "Otro"
-      )
+      case_when(
+        relación_con_propiedad %in% c("Propio con algún comprobante de tenencia", "Propio sin títulos") ~ "Propietario",
+        relación_con_propiedad == "Alquilado" ~ "Inquilino",
+        relación_con_propiedad %in% c("Prestado", "Ocupado/Tomado") ~ "Ocupante/Prestado",
+        TRUE ~ "Otro"
+      ),
+      levels = c("Propietario", "Inquilino", "Ocupante/Prestado", "Otro")
     ),
     
     tiene_contrato_de_alquiler = ifelse(tiene_contrato_de_alquiler == "NA", NA, tiene_contrato_de_alquiler),
     
     # 3. Servicios básicos
     suministro_de_agua = factor(
-      suministro_de_agua,
-      levels = c(
-        "A través de una conexión con medidor a la red pública",
-        "A través de una conexión sin medidor, es decir 'informalmente'",
-        "A través de un camión cisterna",
-        "A través de un pozo",
-        "Conexión a un tanque comunitario",
-        "No poseo agua dentro de la vivienda y/o tengo que acarrear desde fuera del terreno en que se ubica mi vivienda",
-        "No sabe"
-      )
+      case_when(
+        str_detect(suministro_de_agua, "conexión con medidor") ~ "Red formal",
+        str_detect(suministro_de_agua, "sin medidor|informal") ~ "Red informal",
+        str_detect(suministro_de_agua, "cisterna|pozo|comunitario") ~ "Fuente alternativa",
+        suministro_de_agua == "No poseo agua dentro de la vivienda" ~ "Sin acceso",
+        TRUE ~ "No sabe"
+      ),
+      levels = c("Red formal", "Red informal", "Fuente alternativa", "Sin acceso", "No sabe")
     ),
     
     conexión_red_eléctrica = factor(
-      conexión_red_eléctrica,
-      levels = c(
-        "Conexión a través de un medidor a la red eléctrica",
-        "Conexión a través de un medidor comunitario a la red eléctrica",
-        "Conexión sin medidor a una red eléctrica ('informal')",
-        "No posee conexión a la red eléctrica en la vivienda"
-      )
+      case_when(
+        conexión_red_eléctrica == "Conexión a través de un medidor a la red eléctrica" ~ "Formal",
+        conexión_red_eléctrica == "Conexión a través de un medidor comunitario a la red eléctrica" ~ "Comunitario",
+        str_detect(conexión_red_eléctrica, "sin medidor|informal") ~ "Informal",
+        TRUE ~ "Sin conexión"
+      ),
+      levels = c("Formal", "Comunitario", "Informal", "Sin conexión")
     ),
     
     # 4. Infraestructura sanitaria 
@@ -229,11 +225,14 @@ datos_limpios <- datos %>%
     ),
     
     baño_posee_descarga_de_agua = factor(
-      baño_posee_descarga_de_agua,
-      levels = c("Si, posee cadena/botón de descarga", 
-                 "Descargamos manualmente con baldes", 
-                 "No posee descarga")
+      case_when(
+        baño_posee_descarga_de_agua == "Si, posee cadena/botón de descarga" ~ "Descarga automática",
+        baño_posee_descarga_de_agua == "Descargamos manualmente con baldes" ~ "Descarga manual",
+        TRUE ~ "Sin descarga"
+      ),
+      levels = c("Descarga automática", "Descarga manual", "Sin descarga")
     ),
+    
     
     # 5. Variables ambientales 
     calificación_arbolado = factor(
@@ -250,17 +249,23 @@ datos_limpios <- datos %>%
     
     # 7. Variables de materiales 
     material_piso = factor(
-      material_piso,
-      levels = c("Carpeta de cemento", "Cerámico", "Madera", "Sin piso/tierra")
+      case_when(
+        material_piso %in% c("Carpeta de cemento", "Cerámico") ~ "Sólido",
+        material_piso == "Madera" ~ "Madera",
+        TRUE ~ "Tierra"
+      ),
+      levels = c("Sólido", "Madera", "Tierra")
     ),
     
     # 8. Variables de servicios urbanos 
     calle_asfaltada = factor(calle_asfaltada, levels = c("Sí", "No")),
     hay_alumbrado_público = factor(
-      hay_alumbrado_público,
-      levels = c("Sí, hechas por el Estado (municipio, provincia o Estado nacional)",
-                 "Sí, hechas por vecinxs",
-                 "No")
+      case_when(
+        hay_alumbrado_público == "No" ~ "No",
+        str_detect(hay_alumbrado_público, "Estado") ~ "Estatal",
+        TRUE ~ "Vecinal"
+      ),
+      levels = c("Estatal", "Vecinal", "No")
     )
   ) %>%
   # Convertir porcentajes a numéricos
