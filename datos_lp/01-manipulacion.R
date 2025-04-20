@@ -158,94 +158,254 @@ colnames(datos) <- c(
 ###################
 # Modificar datos #
 ###################
-datos_limpios <- datos %>% # Los pipelines permiten encadenar acciones
-	
-	mutate(   # Para crear nuevas variables y editar las ya existentes
-		
-		# Veo valores min y max de la variable para elegir una
-		# particion en intervalos apropiada
-		# min(altura)
-		# max(altura)
-		# sqrt(nrow(datos))
-		
-		# Creo una variable nueva, con la partición en intervalos de altura
-		altura_int = cut(altura,
-										 breaks = seq(from=0, to=50, by = 5),
-										 right = F),
-		
-		# Modifico las columnas de la variable de respuesta múltiple
-		# para dejarlas como indicadoras con valores 1 (en caso de presentar
-		# el atributo) y 0 (en caso de no presentarlo)
-		atracnosis = ifelse( atracnosis == "atracnosis", 1, 0 ),
-		roya = ifelse( roya == "roya", 1, 0 ),
-		manchas = ifelse( manchas == "manchas", 1, 0 ),
-		ampollas = ifelse( ampollas == "ampollas", 1, 0),
-		# Notar que los NA no entran dentro de la categoría "no presentar 
-		# el atributo", por lo que requieren un tratamiento particular:
-		
-		atracnosis = ifelse(is.na(atracnosis), 0, 1),
-		roya = ifelse(is.na(roya), 0, 1),
-		manchas = ifelse(is.na(manchas), 0, 1),
-		ampollas = ifelse(is.na(ampollas), 0, 1),
-		# Esto solo es correcto porque teníamos dos valores posibles en estas
-		# columnas: presencia de atributo (nombre de la plaga) y ausencia (NA).
-		# En los casos en los que se presenten ambas categorías además del NA
-		# correspondería trabajarlos como tres valores distintos (presencia,
-		# ausencia y faltante) y su tratamiento dependerá de lo que se desee hacer
-		
-		# Para condiciones ifelse múltiples puedo usar la función case_when
-		inclinacion_cate = case_when(inclinacion == 0 ~ "Sin inclinación",
-																 inclinacion < 15 ~ "Inclinación leve",
-																 inclinacion < 30 ~ "Inclinación moderada",
-																 TRUE ~ "Inclinación alta"),
-		
-		# Recodifico las etiquetas de una variable categórica
-		especie = recode(especie, "ala" = "Álamo",
-										 "casu" = "Casuarina",
-										 "euca" = "Eucalipto",
-										 "jaca" = "Jacarandá",
-										 "palo"  = "Palo borracho"),
-		
-		# Especifico ordinalidad a las categorías de una variable
-		tiempo = factor(tiempo,
-										levels = 1:5,
-										labels = c("Menos de 2 años", "Entre 2 y 5 años",
-																				 "Entre 5 y 10 años", "Entre 10 y 20 años",
-																				 "20 años o más"))
+###################
+# Modificar datos #
+###################
 
-	)
+datos_limpios <- datos %>%
+  mutate(
+    # 1. Variables de hacinamiento
+    personas_por_dormitorio = ifelse(núm_dormitorios > 0, 
+                                     núm_integrantes/núm_dormitorios, 
+                                     NA_real_),
+    
+    hacinamiento = factor(
+      case_when(
+        personas_por_dormitorio > 3 ~ "Crítico",
+        personas_por_dormitorio > 2 ~ "Alto",
+        personas_por_dormitorio > 1 ~ "Moderado",
+        personas_por_dormitorio > 0 ~ "Bajo",
+        TRUE ~ "Sin datos"
+      ),
+      levels = c("Sin datos", "Bajo", "Moderado", "Alto", "Crítico"),
+      ordered = TRUE
+    ),
+    
+    # 2. Tenencia
+    relación_con_propiedad = factor(
+      relación_con_propiedad,
+      levels = c(
+        "Propio con algún comprobante de tenencia",
+        "Propio sin títulos",
+        "Alquilado",
+        "Prestado",
+        "Ocupado/Tomado",
+        "Otro"
+      )
+    ),
+    
+    tiene_contrato_de_alquiler = ifelse(tiene_contrato_de_alquiler == "NA", NA, tiene_contrato_de_alquiler),
+    
+    # 3. Servicios básicos
+    suministro_de_agua = factor(
+      suministro_de_agua,
+      levels = c(
+        "A través de una conexión con medidor a la red pública",
+        "A través de una conexión sin medidor, es decir 'informalmente'",
+        "A través de un camión cisterna",
+        "A través de un pozo",
+        "Conexión a un tanque comunitario",
+        "No poseo agua dentro de la vivienda y/o tengo que acarrear desde fuera del terreno en que se ubica mi vivienda",
+        "No sabe"
+      )
+    ),
+    
+    conexión_red_eléctrica = factor(
+      conexión_red_eléctrica,
+      levels = c(
+        "Conexión a través de un medidor a la red eléctrica",
+        "Conexión a través de un medidor comunitario a la red eléctrica",
+        "Conexión sin medidor a una red eléctrica ('informal')",
+        "No posee conexión a la red eléctrica en la vivienda"
+      )
+    ),
+    
+    # 4. Infraestructura sanitaria 
+    posee_baño = factor(
+      recode(posee_baño, 
+             "Si, dentro de la vivienda" = "Dentro", 
+             "Si, fuera de la vivienda" = "Fuera"),
+      levels = c("Dentro", "Fuera", "No")
+    ),
+    
+    baño_posee_descarga_de_agua = factor(
+      baño_posee_descarga_de_agua,
+      levels = c("Si, posee cadena/botón de descarga", 
+                 "Descargamos manualmente con baldes", 
+                 "No posee descarga")
+    ),
+    
+    # 5. Variables ambientales 
+    calificación_arbolado = factor(
+      calificación_arbolado,
+      levels = c("Inexistente", "Escaso", "Suficiente"),
+      ordered = TRUE
+    ),
+    
+    hay_plagas = ifelse(hay_plagas == "NA", NA, hay_plagas),
+    
+    # 6. Tratamiento de variables binarias 
+    across(c(plaga_cucaracha, plaga_mosquito, plaga_rata),
+           ~ifelse(.x == "Cucarachas" | .x == "Mosquitos" | .x == "Ratas", 1, 0)),
+    
+    # 7. Variables de materiales 
+    material_piso = factor(
+      material_piso,
+      levels = c("Carpeta de cemento", "Cerámico", "Madera", "Sin piso/tierra")
+    ),
+    
+    # 8. Variables de servicios urbanos 
+    calle_asfaltada = factor(calle_asfaltada, levels = c("Sí", "No")),
+    hay_alumbrado_público = factor(
+      hay_alumbrado_público,
+      levels = c("Sí, hechas por el Estado (municipio, provincia o Estado nacional)",
+                 "Sí, hechas por vecinxs",
+                 "No")
+    )
+  ) %>%
+  # Convertir porcentajes a numéricos
+  mutate(porcentaje_de_aumento_de_alquiler = as.numeric(porcentaje_de_aumento_de_alquiler))
 
 ##########################################
-# Seleccionar un subconjunto de columnas #
+# Selección de columnas clave            #
 ##########################################
 
-# Opcion 1
-datos_chico1 <- datos_limpios %>%
-	select(   # Seleccionar las columnas que quiero conservar
-		id, altura, edad, follaje, inclinacion_cate
-	)
+datos_analisis <- datos_limpios %>%
+  select(
+    provincia, barrio,
+    # Variables demográficas
+    edad_jefe_del_hogar, núm_integrantes, conviven_personas_con_discapacidades,
+    # Vivienda
+    relación_con_propiedad, tiene_contrato_de_alquiler, costo_de_alquiler,
+    # Hacinamiento
+    núm_dormitorios, personas_por_dormitorio, hacinamiento,
+    # Servicios básicos
+    suministro_de_agua, conexión_red_eléctrica, posee_baño, baño_posee_descarga_de_agua,
+    # Problemáticas
+    hubo_intento_de_desalojo, hay_plagas, plaga_cucaracha, plaga_mosquito, plaga_rata,
+    # Entorno
+    calificación_arbolado, hay_basurales_cerca,
+    # Materiales
+    material_piso
+  )
 
-# Opcion 2
-datos_chico2 <- datos_limpios %>%
-	select(   # Eliminar las columnas que no quiero conservar
-		-altura, -edad, -follaje, -inclinacion_cate
-	)
+# Verificar niveles de variables clave
+list(
+  hacinamiento = levels(datos_limpios$hacinamiento),
+  relación_propiedad = levels(datos_limpios$relación_con_propiedad),
+  agua = levels(datos_limpios$suministro_de_agua),
+  electricidad = levels(datos_limpios$conexión_red_eléctrica)
+)
 
-# Opcion 3
-datos_orden <- datos_limpios %>%
-	select(   # Reordeno columnas
-		id, especie, tiempo, everything()
-	)
+##########################################
+# SUBCONJUNTOS PARA ANÁLISIS ESPECÍFICOS #
+##########################################
 
+# Análisis de tenencia y desalojos
+datos_tenencia <- datos_limpios %>%
+  select(
+    provincia, barrio,
+    relación_con_propiedad, tiene_contrato_de_alquiler,
+    hubo_intento_de_desalojo, núm_intentos_de_desalojo,
+    tiempo_desde_último_intento_de_desalojo,
+    costo_de_alquiler, aumento_de_alquiler_en_último_año
+  ) %>%
+  filter(!is.na(hubo_intento_de_desalojo))
 
-###########################################
-# Seleccionar un subconjunto de registros #
-###########################################
+# Análisis de hacinamiento
+datos_hacinamiento_critico <- datos_limpios %>%
+  select(
+    barrio, provincia,
+    núm_integrantes, núm_dormitorios, personas_por_dormitorio, hacinamiento,
+    material_piso, filtraciones_dormitorios
+  ) %>%
+  filter(hacinamiento %in% c("Alto", "Crítico"))
 
-# Opción 1: por criterio
-datos_reducido1 <-datos_orden %>%
-	filter((brotes > 4 & origen == "Nativo/Autóctono") | tiempo == "20 años o más")
+# Análisis de servicios básicos deficitarios
+datos_servicios_deficit <- datos_limpios %>%
+  select(
+    barrio, provincia,
+    suministro_de_agua, conexión_red_eléctrica,
+    posee_baño, baño_posee_descarga_de_agua,
+    tiene_contrapiso, material_piso
+  ) %>%
+  filter(
+    suministro_de_agua == "No poseo agua dentro de la vivienda y/o tengo que acarrear desde fuera del terreno en que se ubica mi vivienda" |
+      conexión_red_eléctrica == "No posee conexión a la red eléctrica en la vivienda" |
+      posee_baño == "No"
+  )
 
-# Opción 2: por indexación
-datos_reducido2 <-datos_orden %>%
-	slice(1:500)
+# Análisis de condiciones ambientales
+datos_ambiente <- datos_limpios %>%
+  select(
+    barrio, provincia,
+    calificación_arbolado, hay_basurales_cerca,
+    hay_plagas, plaga_cucaracha, plaga_mosquito, plaga_rata,
+    riesgo_inundación
+  ) %>%
+  filter(
+    calificación_arbolado == "Inexistente" |
+      hay_basurales_cerca != "No" |
+      hay_plagas == "Sí"
+  )
+
+# Análisis económico (alquileres)
+datos_economicos <- datos_limpios %>%
+  select(
+    barrio, provincia,
+    relación_con_propiedad, tiene_contrato_de_alquiler,
+    costo_de_alquiler, aumento_de_alquiler_en_último_año,
+    porcentaje_de_aumento_de_alquiler
+  ) %>%
+  filter(
+    relación_con_propiedad == "Alquilado",
+    !is.na(costo_de_alquiler)
+  )
+
+# 6. Muestra estratificada para análisis cualitativo
+# set.seed(123)
+# datos_cualitativo <- datos_limpios %>%
+#   group_by(provincia, hacinamiento) %>%
+#   sample_n(size = min(15, n()), replace = FALSE) %>%
+#   ungroup() %>%
+#   select(
+#     barrio, provincia,
+#     relación_con_propiedad, hacinamiento,
+#     suministro_de_agua, conexión_red_eléctrica,
+#     hay_plagas, calificación_arbolado
+#   )
+
+# Datos para modelos estadísticos (sin NAs)
+datos_modelado <- datos_limpios %>%
+  select(
+    hacinamiento,
+    relación_con_propiedad,
+    suministro_de_agua,
+    conexión_red_eléctrica,
+    hay_plagas,
+    calificación_arbolado,
+    hay_basurales_cerca,
+    núm_integrantes,
+    núm_dormitorios
+  ) %>%
+  drop_na() # Ver como manejar mejor NAS
+
+# Análisis espacial (geo-referenciable)
+datos_espacial <- datos_limpios %>%
+  select(
+    barrio, provincia,
+    hacinamiento,
+    suministro_de_agua,
+    conexión_red_eléctrica,
+    hay_basurales_cerca,
+    calificación_arbolado,
+    riesgo_inundación
+  ) %>%
+  group_by(barrio, provincia) %>%
+  summarise(
+    tasa_hacinamiento_critico = mean(hacinamiento %in% c("Alto", "Crítico"),
+                                     sin_agua = mean(suministro_de_agua == "No poseo agua dentro de la vivienda y/o tengo que acarrear desde fuera del terreno en que se ubica mi vivienda"),
+                                     sin_luz = mean(conexión_red_eléctrica == "No posee conexión a la red eléctrica en la vivienda"),
+                                     con_basurales = mean(hay_basurales_cerca != "No"),
+                                     .groups = 'drop'
+    )
