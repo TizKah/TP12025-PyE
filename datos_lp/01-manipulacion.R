@@ -363,7 +363,7 @@ datos_economicos <- datos_limpios %>%
     porcentaje_de_aumento_de_alquiler
   ) %>%
   filter(
-    relación_con_propiedad == "Alquilado",
+    relación_con_propiedad == "Inquilino",
     !is.na(costo_de_alquiler)
   )
 
@@ -414,3 +414,4 @@ datos_espacial <- datos_limpios %>%
                                      con_basurales = mean(hay_basurales_cerca != "No"),
                                      .groups = 'drop'
     )
+    
