@@ -140,11 +140,10 @@ tabla_correlaciones <- datos_limpios %>%
   mutate(across(where(is.numeric), ~round(., 3)))
 
 ### FUNCIÓN PARA EXPORTAR TABLAS ###
-# Instalar paquete si no lo tienes
 # install.packages("openxlsx")
 library(openxlsx)
 
-# Función CORRECTA para guardar tablas en Excel
+# Función para guardar tablas en Excel
 guardar_tabla_excel <- function(tabla, nombre_archivo) {
   # Crear carpeta si no existe
   if (!dir.exists("tablas")) {
@@ -167,6 +166,20 @@ guardar_tabla_excel <- function(tabla, nombre_archivo) {
   message(paste("Tabla guardada en Excel como:", ruta_archivo))
   return(tabla)
 }
+
+tablas <- list(
+  "Tenencia" = tabla_tenencia,
+  "Tenencia_vs_Desalojos" = tabla_desalojos,
+  "Hacinamiento" = tabla_hacinamiento,
+  "Hacinamiento_Material" = tabla_hacinamiento_material,
+  "Suministro_Agua" = tabla_agua,
+  "Servicios_Basicos" = tabla_servicios,
+  "Plagas" = tabla_plagas,
+  "Plagas_Basurales" = tabla_plagas_basurales,
+  "Resumen_Alquileres" = resumen_alquileres,
+  "Aumentos_Alquiler" = tabla_aumentos,
+  "Correlaciones" = tabla_correlaciones
+)
 
 # "For" para cada elemento de tablas
 walk2(tablas, names(tablas), ~guardar_tabla_excel(.x, .y))
