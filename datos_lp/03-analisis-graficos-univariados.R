@@ -82,7 +82,7 @@ respuesta_multiple_table %>%
   
   labs(y = "Cantidad de hogares", x = "Tipo de plaga") + # Nombres de ejes
   
-  ggtitle("Hacinamiento") +
+  ggtitle("Plagas por hogares") +
   
   coord_flip() + # Barras horizontales o verticales
   
