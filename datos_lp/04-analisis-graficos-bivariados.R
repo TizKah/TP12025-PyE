@@ -32,6 +32,11 @@ ggplot() +
   aes(x = hubo_intento_de_desalojo, y = Freq, fill = hay_plagas) +
   geom_bar(position="stack", stat="identity")
 
+##############
+# Histograma #
+##############
+hist(porcentaje_de_aumento_de_alquiler, breaks = c(0,0.25,0.5,0.75,1.0,2.0,6.0))
+
 ##########
 # Barras #
 ##########
