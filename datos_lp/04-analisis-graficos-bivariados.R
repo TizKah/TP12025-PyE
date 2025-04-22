@@ -42,3 +42,36 @@ ggplot(datos_limpios) +
   #labs(x = "Número de integrantes del hogar", y = "Número dormitorios")+
   #ggtitle("Relación entre el número de integrantes del hogar y el número de dormitorios") +
   theme_classic()
+
+##########################
+# Plagas y basurales     #
+##########################
+
+ggplot(data = table(hay_plagas, hay_basurales_cerca) %>%
+         prop.table(margin = 2) %>%
+         as.data.frame(), aes(x = hay_basurales_cerca, y = Freq, fill = hay_plagas)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(
+    x = "¿Hay basurales cerca?",
+    y = "Proporción",
+    fill = "¿Hay plagas?",
+    title = "Relación entre plagas y basurales cercanos"
+  ) +
+  scale_y_continuous(labels = scales::percent) +
+  theme_minimal()
+
+
+##########################
+# Hacinamiento por barrio#
+##########################
+
+ggplot(datos_limpios, aes(x = hacinamiento, fill = barrio)) +
+  geom_bar(position = "dodge") +
+  labs(
+    title = "Distribución del Hacinamiento por Barrio",
+    x = "Nivel de Hacinamiento",
+    y = "Frecuencia",
+    fill = "Barrio"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
