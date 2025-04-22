@@ -25,17 +25,23 @@ ggplot(datos_limpios) +
 # Barras agrupadas #
 ####################
 
-table(hay_plagas, hubo_intento_de_desalojo) %>%
-prop.table(margin=2) %>%
+table(tiene_contrato_de_alquiler, hubo_intento_de_desalojo) %>%
+prop.table(margin=1) %>%
 as.data.frame() %>%
 ggplot() +
-  aes(x = hubo_intento_de_desalojo, y = Freq, fill = hay_plagas) +
+  aes(x = tiene_contrato_de_alquiler, y = Freq, fill = hubo_intento_de_desalojo) +
   geom_bar(position="stack", stat="identity")
 
-##############
-# Histograma #
-##############
-hist(porcentaje_de_aumento_de_alquiler, breaks = c(0,0.25,0.5,0.75,1.0,2.0,6.0))
+##########################
+# Diagrama de dispersión #
+##########################
+
+ggplot(datos_limpios) +
+  aes(x = edad_jefe_del_hogar, y = años_de_residencia) +
+  geom_point() +
+  #labs(x = "Número de integrantes del hogar", y = "Número dormitorios")+
+  #ggtitle("Relación entre el número de integrantes del hogar y el número de dormitorios") +
+  theme_classic()
 
 ##########
 # Barras #

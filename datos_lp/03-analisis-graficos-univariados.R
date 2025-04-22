@@ -9,6 +9,92 @@ library(ggplot2)
 # Fijo el dataset
 attach(datos_limpios)
 
+##############
+# Histograma #
+##############
+ggplot(datos_limpios) +
+  aes(x = porcentaje_de_aumento_de_alquiler, y = ..count../sum(..count..)) +
+  geom_histogram(fill = "lightgray", col = "black", 
+                 breaks = seq(0, 6, 0.5)) +
+  scale_x_continuous(breaks = seq(0, 6, 0.5)) +
+  scale_y_continuous(labels = scales::percent) +
+  labs(x = "Porcentaje de aumento de alquiler", y = "Proporción de hogares")
+
+#######################
+# Gráfico de bastones #
+#######################
+
+ggplot(datos) +
+  aes(x = núm_integrantes) + 
+  geom_bar(width = 0.10) +
+  scale_x_continuous(breaks = seq(0, 10, 1)) +
+  theme_classic()
+
+#####################
+# Gráfico de barras #
+#####################
+
+datos_analisis %>%
+  ggplot() + 
+  
+  #aes(x = hacinamiento) + # Frecuencias absolutas
+  aes(x = hacinamiento) +
+  #aes(x = hacinamiento, y = ..count.. / sum(..count..)) + # Porcentajes
+  # aes(x = reorder(hacinamiento, hacinamiento, function(x) -length(x)), 
+  #		y = ..count.. / sum(..count..)) +  # Porcentajes ordenados según frecuencia
+  #scale_y_continuous(labels = scales::percent) +    # Eje para porcentajes
+  
+  geom_bar(width = 0.75,   # Ancho de barras
+           fill = '#7ed021',  # Color de relleno 
+           col = "black",  # Color de línea
+           alpha = 0.6) +  # Transparencia
+  
+  labs(y = "Cantidad de hogares", x = "Nivel de hacinamiento") + # Nombres de ejes
+  
+  ggtitle("Hacinamiento") +
+  
+  coord_flip() + # Barras horizontales o verticales
+  
+  theme_classic() # Temas preconfigurados de R https://r-charts.com/ggplot2/themes/
+
+#####################
+# Gráfico de barras #
+#####################
+
+respuesta_multiple_table <- as.data.frame(c(sum(na.omit(plaga_cucaracha)), sum(na.omit(plaga_mosquito)), sum(na.omit(plaga_rata))))
+colnames(respuesta_multiple_table) <- c("Freq")
+rownames(respuesta_multiple_table) <- c("Cucarachas", "Mosquitos", "Ratas")
+
+respuesta_multiple_table %>%
+  ggplot() + 
+  
+  #aes(x = hacinamiento) + # Frecuencias absolutas
+  aes(x = rownames(respuesta_multiple_table), y = Freq) +
+  #aes(x = hacinamiento, y = ..count.. / sum(..count..)) + # Porcentajes
+  # aes(x = reorder(hacinamiento, hacinamiento, function(x) -length(x)), 
+  #		y = ..count.. / sum(..count..)) +  # Porcentajes ordenados según frecuencia
+  #scale_y_continuous(labels = scales::percent) +    # Eje para porcentajes
+  
+  geom_bar(width = 0.75,   # Ancho de barras
+           fill = '#7ed021',  # Color de relleno 
+           col = "black",  # Color de línea
+           alpha = 0.6, stat="identity") +  # Transparencia
+  
+  labs(y = "Cantidad de hogares", x = "Nivel de hacinamiento") + # Nombres de ejes
+  
+  ggtitle("Hacinamiento") +
+  
+  coord_flip() + # Barras horizontales o verticales
+  
+  theme_classic() # Temas preconfigurados de R https://r-charts.com/ggplot2/themes/
+
+rm(respuesta_multiple_table)
+
+##################################
+# Gráfico de sectores circulares #
+##################################
+table(datos_limpios$conviven_personas_con_discapacidades) %>% pie()
+
 #####################
 # Gráfico de barras #
 #####################
