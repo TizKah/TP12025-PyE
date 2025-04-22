@@ -9,6 +9,18 @@ library(ggplot2)
 # Fijo el dataset
 attach(datos_limpios)
 
+########################
+# Boxplot comparativos #
+########################
+
+ggplot(datos_limpios) +
+  aes(x = relación_con_propiedad, y = edad_jefe_del_hogar) +
+  geom_boxplot(show.legend = F, fill = "lightblue") +
+  labs(x = "Relación con propiedad", y = "Edad") +
+  coord_flip() +
+  ggtitle("Edades de jefe/a del hogar relativo a relación con propiedad") +
+  theme_light()
+
 ##########
 # Barras #
 ##########
@@ -88,20 +100,6 @@ ggplot(datos_limpios) +
               color = "red") + # Color de los puntos jitter
   ggtitle("Relación entre el diámetro y la altura de los árboles") +
   theme_bw()
-
-
-
-########################
-# Boxplot comparativos #
-########################
-
-ggplot(datos_limpios) +
-  aes(x = especie, y = altura) +
-  geom_boxplot(show.legend = F, fill = "lightblue") +
-  labs(x = "Especie", y = "Altura (m)") +
-  coord_flip() +
-  ggtitle("Distribución de la altura de los árboles según especie") +
-  theme_light()
 
 # Caso particuar: variable categórica de opción múltiple
 # Como la variable no es una partición del total de individuos entonces

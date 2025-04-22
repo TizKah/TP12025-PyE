@@ -158,9 +158,6 @@ colnames(datos) <- c(
 ###################
 # Modificar datos #
 ###################
-###################
-# Modificar datos #
-###################
 
 datos_limpios <- datos %>%
   mutate(
@@ -281,9 +278,9 @@ datos_analisis <- datos_limpios %>%
     # Variables demográficas
     edad_jefe_del_hogar, núm_integrantes, conviven_personas_con_discapacidades,
     # Vivienda
-    relación_con_propiedad, tiene_contrato_de_alquiler, costo_de_alquiler,
+    relación_con_propiedad, tiene_contrato_de_alquiler, costo_de_alquiler, porcentaje_de_aumento_de_alquiler,
     # Hacinamiento
-    núm_dormitorios, personas_por_dormitorio, hacinamiento,
+    núm_dormitorios, máx_personas_por_dormitorio, hacinamiento,
     # Servicios básicos
     suministro_de_agua, conexión_red_eléctrica, posee_baño, baño_posee_descarga_de_agua,
     # Problemáticas
@@ -321,7 +318,7 @@ datos_tenencia <- datos_limpios %>%
 datos_hacinamiento_critico <- datos_limpios %>%
   select(
     barrio, provincia,
-    núm_integrantes, núm_dormitorios, personas_por_dormitorio, hacinamiento,
+    núm_integrantes, núm_dormitorios, personas_por_dormitorio, máx_personas_por_dormitorio, hacinamiento,
     material_piso, filtraciones_dormitorios
   ) %>%
   filter(hacinamiento %in% c("Alto", "Crítico"))
@@ -413,5 +410,5 @@ datos_espacial <- datos_limpios %>%
                                      sin_luz = mean(conexión_red_eléctrica == "No posee conexión a la red eléctrica en la vivienda"),
                                      con_basurales = mean(hay_basurales_cerca != "No"),
                                      .groups = 'drop'
-    )
+    ))
     
