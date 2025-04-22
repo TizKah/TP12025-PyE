@@ -21,6 +21,17 @@ ggplot(datos_limpios) +
   ggtitle("Edades de jefe/a del hogar relativo a relación con propiedad") +
   theme_light()
 
+####################
+# Barras agrupadas #
+####################
+
+table(hay_plagas, hubo_intento_de_desalojo) %>%
+prop.table(margin=2) %>%
+as.data.frame() %>%
+ggplot() +
+  aes(x = hubo_intento_de_desalojo, y = Freq, fill = hay_plagas) +
+  geom_bar(position="stack", stat="identity")
+
 ##########
 # Barras #
 ##########

@@ -161,7 +161,7 @@ colnames(datos) <- c(
 
 datos_limpios <- datos %>%
   mutate(
-    # 1. Variables de hacinamiento
+    # Variables de hacinamiento
     personas_por_dormitorio = ifelse(núm_dormitorios > 0, 
                                      núm_integrantes/núm_dormitorios, 
                                      NA_real_),
@@ -178,7 +178,7 @@ datos_limpios <- datos %>%
       ordered = TRUE
     ),
     
-    # 2. Tenencia
+    # Tenencia
     relación_con_propiedad = factor(
       case_when(
         relación_con_propiedad %in% c("Propio con algún comprobante de tenencia", "Propio sin títulos") ~ "Propietario",
@@ -191,7 +191,7 @@ datos_limpios <- datos %>%
     
     tiene_contrato_de_alquiler = ifelse(tiene_contrato_de_alquiler == "NA", NA, tiene_contrato_de_alquiler),
     
-    # 3. Servicios básicos
+    # Servicios básicos
     suministro_de_agua = factor(
       case_when(
         str_detect(suministro_de_agua, "conexión con medidor") ~ "Red formal",
@@ -213,7 +213,7 @@ datos_limpios <- datos %>%
       levels = c("Formal", "Comunitario", "Informal", "Sin conexión")
     ),
     
-    # 4. Infraestructura sanitaria 
+    # Infraestructura sanitaria 
     posee_baño = factor(
       recode(posee_baño, 
              "Si, dentro de la vivienda" = "Dentro", 
@@ -231,7 +231,7 @@ datos_limpios <- datos %>%
     ),
     
     
-    # 5. Variables ambientales 
+    # Variables ambientales 
     calificación_arbolado = factor(
       calificación_arbolado,
       levels = c("Inexistente", "Escaso", "Suficiente"),
@@ -240,11 +240,11 @@ datos_limpios <- datos %>%
     
     hay_plagas = ifelse(hay_plagas == "NA", NA, hay_plagas),
     
-    # 6. Tratamiento de variables binarias 
+    # Tratamiento de variables binarias 
     across(c(plaga_cucaracha, plaga_mosquito, plaga_rata),
            ~ifelse(.x == "Cucarachas" | .x == "Mosquitos" | .x == "Ratas", 1, 0)),
     
-    # 7. Variables de materiales 
+    # Variables de materiales 
     material_piso = factor(
       case_when(
         material_piso %in% c("Carpeta de cemento", "Cerámico") ~ "Sólido",
@@ -254,7 +254,7 @@ datos_limpios <- datos %>%
       levels = c("Sólido", "Madera", "Tierra")
     ),
     
-    # 8. Variables de servicios urbanos 
+    # Variables de servicios urbanos 
     calle_asfaltada = factor(calle_asfaltada, levels = c("Sí", "No")),
     hay_alumbrado_público = factor(
       case_when(
@@ -263,7 +263,10 @@ datos_limpios <- datos %>%
         TRUE ~ "Vecinal"
       ),
       levels = c("Estatal", "Vecinal", "No")
-    )
+    ),
+    
+    # Composición del hogar
+    conviven_personas_con_discapacidades = ifelse(conviven_personas_con_discapacidades == 1, "Sí", "No")
   ) %>%
   # Convertir porcentajes a numéricos
   mutate(porcentaje_de_aumento_de_alquiler = as.numeric(porcentaje_de_aumento_de_alquiler))
