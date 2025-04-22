@@ -80,7 +80,7 @@ respuesta_multiple_table %>%
            col = "black",  # Color de línea
            alpha = 0.6, stat="identity") +  # Transparencia
   
-  labs(y = "Cantidad de hogares", x = "Nivel de hacinamiento") + # Nombres de ejes
+  labs(y = "Cantidad de hogares", x = "Tipo de plaga") + # Nombres de ejes
   
   ggtitle("Hacinamiento") +
   
