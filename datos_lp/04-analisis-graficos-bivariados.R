@@ -65,13 +65,43 @@ ggplot(data = table(hay_plagas, hay_basurales_cerca) %>%
 # Hacinamiento por barrio#
 ##########################
 
-ggplot(datos_limpios, aes(x = hacinamiento, fill = barrio)) +
+ggplot(datos_limpios, aes(x = barrio, fill = hacinamiento)) +
+  geom_bar(position = "fill") +
+  labs(
+    title = "Distribución del hacinamiento por barrio",
+    x = "Barrio",
+    y = "Porcentaje",
+    fill = "Nivel de hacinamiento"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+####################################################
+# Suministro agua y conexión eláctrica             #
+####################################################
+
+ggplot(datos_limpios, aes(x = conexión_red_eléctrica, fill = suministro_de_agua)) +
+  geom_bar(position = "fill") +
+  labs(
+    title = "Distribución del suministro de agua por tipo de conexión eléctrica",
+    x = "Tipo de suministro de agua",
+    y = "Frecuencia",
+    fill = "Conexión eléctrica"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+# Tipo de baño y presencia de plagas
+
+ggplot(datos_limpios, aes(x = posee_baño, fill = hay_plagas)) +
   geom_bar(position = "dodge") +
   labs(
-    title = "Distribución del Hacinamiento por Barrio",
-    x = "Nivel de Hacinamiento",
+    title = "Relación entre tipo de baño y presencia de plagas",
+    x = "Tipo de Baño",
     y = "Frecuencia",
-    fill = "Barrio"
+    fill = "Presencia de plagas"
   ) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
