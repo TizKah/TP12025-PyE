@@ -73,6 +73,7 @@ ggplot(datos_limpios, aes(x = barrio, fill = hacinamiento)) +
     y = "Porcentaje",
     fill = "Nivel de hacinamiento"
   ) +
+  scale_y_continuous(labels = scales::percent) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
@@ -89,6 +90,7 @@ ggplot(datos_limpios, aes(x = conexión_red_eléctrica, fill = suministro_de_agu
     y = "Frecuencia",
     fill = "Conexión eléctrica"
   ) +
+  scale_y_continuous(labels = scales::percent) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
@@ -106,5 +108,6 @@ ggplot(aes(x = posee_baño, y = Freq, fill = hay_plagas)) +
     y = "Frecuencia relativa",
     fill = "Presencia de plagas"
   ) +
+  scale_y_continuous(labels = scales::percent) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))

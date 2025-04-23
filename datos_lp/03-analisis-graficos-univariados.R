@@ -17,9 +17,9 @@ ggplot(datos_limpios) +
   aes(x = porcentaje_de_aumento_de_alquiler, y = ..count../sum(..count..)) +
   geom_histogram(fill = "lightgray", col = "black", 
                  breaks = c(0,.25,.5,.75,1,2,6)) +
-  scale_x_continuous(breaks = c(0,.25,.5,.75,1,2,6)) +
-  scale_y_continuous(labels = scales::percent) +
-  labs(x = "Porcentaje de aumento de alquiler", y = "Proporción de hogares")
+  scale_x_continuous(labels = scales::percent, breaks = c(0,.25,.5,.75,1,2,6)) +
+  scale_y_continuous(breaks = c(0,.2,.4,.6), limits=c(0,.6)) +
+  labs(x = "Porcentaje de aumento de alquiler", y = "Densidad")
 
 #######################
 # Gráfico de bastones #
