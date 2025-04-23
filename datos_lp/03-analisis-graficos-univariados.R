@@ -12,11 +12,12 @@ attach(datos_limpios)
 ##############
 # Histograma #
 ##############
+
 ggplot(datos_limpios) +
   aes(x = porcentaje_de_aumento_de_alquiler, y = ..count../sum(..count..)) +
   geom_histogram(fill = "lightgray", col = "black", 
-                 breaks = seq(0, 6, 0.5)) +
-  scale_x_continuous(breaks = seq(0, 6, 0.5)) +
+                 breaks = c(0,.25,.5,.75,1,2,6)) +
+  scale_x_continuous(breaks = c(0,.25,.5,.75,1,2,6)) +
   scale_y_continuous(labels = scales::percent) +
   labs(x = "Porcentaje de aumento de alquiler", y = "Proporción de hogares")
 

@@ -95,12 +95,15 @@ ggplot(datos_limpios, aes(x = conexión_red_eléctrica, fill = suministro_de_agu
 
 # Tipo de baño y presencia de plagas
 
-ggplot(datos_limpios, aes(x = posee_baño, fill = hay_plagas)) +
-  geom_bar(position = "dodge") +
+table(posee_baño, hay_plagas) %>%
+  prop.table(margin=1) %>%
+  as.data.frame() %>%
+ggplot(aes(x = posee_baño, y = Freq, fill = hay_plagas)) +
+  geom_bar(position = "dodge", stat = "identity") +
   labs(
     title = "Relación entre tipo de baño y presencia de plagas",
     x = "Tipo de Baño",
-    y = "Frecuencia",
+    y = "Frecuencia relativa",
     fill = "Presencia de plagas"
   ) +
   theme_minimal() +
