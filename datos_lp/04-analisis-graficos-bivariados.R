@@ -18,7 +18,7 @@ ggplot(datos_limpios) +
   geom_boxplot(show.legend = F, fill = "lightblue") +
   labs(x = "Relación con propiedad", y = "Años de residencia") +
   coord_flip() +
-  ggtitle("Años de residencia relativo a relación con propiedad") +
+  ggtitle("Años de residencia relativo a relación con propiedad.\nRelevamiento de Condiciones Habitacionales 2022, La Poderosa.") +
   theme_light()
 
 ####################
@@ -56,7 +56,7 @@ ggplot(data = table(hay_plagas, hay_basurales_cerca) %>%
     x = "¿Hay basurales cerca?",
     y = "Proporción",
     fill = "¿Hay plagas?",
-    title = "Relación entre plagas y basurales cercanos"
+    title = "Relación entre plagas y basurales cercanos.\nRelevamiento de Condiciones Habitacionales 2022, La Poderosa."
   ) +
   scale_y_continuous(labels = scales::percent) +
   theme_minimal()
@@ -69,7 +69,7 @@ ggplot(data = table(hay_plagas, hay_basurales_cerca) %>%
 ggplot(datos_limpios, aes(x = barrio, fill = hacinamiento)) +
   geom_bar(position = "fill") +
   labs(
-    title = "Distribución del hacinamiento por barrio",
+    title = "Distribución del hacinamiento por barrio.\nRelevamiento de Condiciones Habitacionales 2022, La Poderosa.",
     x = "Barrio",
     y = "Porcentaje",
     fill = "Nivel de hacinamiento"
@@ -86,7 +86,7 @@ ggplot(datos_limpios, aes(x = barrio, fill = hacinamiento)) +
 ggplot(datos_limpios, aes(x = conexión_red_eléctrica, fill = suministro_de_agua)) +
   geom_bar(position = "fill") +
   labs(
-    title = "Distribución del suministro de agua por tipo de conexión eléctrica",
+    title = "Distribución del suministro de agua por tipo de conexión eléctrica.\nRelevamiento de Condiciones Habitacionales 2022, La Poderosa.",
     x = "Tipo de suministro de agua",
     y = "Frecuencia",
     fill = "Conexión eléctrica"
@@ -104,7 +104,7 @@ table(posee_baño, hay_plagas) %>%
 ggplot(aes(x = posee_baño, y = Freq, fill = hay_plagas)) +
   geom_bar(position = "dodge", stat = "identity") +
   labs(
-    title = "Relación entre tipo de baño y presencia de plagas",
+    title = "Relación entre tipo de baño y presencia de plagas.\nRelevamiento de Condiciones Habitacionales 2022, La Poderosa.",
     x = "Tipo de Baño",
     y = "Frecuencia relativa",
     fill = "Presencia de plagas"

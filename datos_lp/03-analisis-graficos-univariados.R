@@ -19,7 +19,7 @@ ggplot(datos_limpios) +
                  breaks = c(0,.25,.5,.75,1,2,6)) +
   scale_x_continuous(labels = scales::percent, breaks = c(0,.25,.5,.75,1,2,6)) +
   scale_y_continuous(breaks = c(0,.2,.4,.6), limits=c(0,.6)) +
-  ggtitle("Porcentaje de aumento de alquiler en el último año") +
+  ggtitle("Porcentaje de aumento de alquiler en el último año.\nRelevamiento de Condiciones Habitacionales 2022, La Poderosa.") +
   labs(x = "Porcentaje de aumento de alquiler", y = "Densidad")
 
 #######################
@@ -30,7 +30,7 @@ ggplot(datos) +
   aes(x = núm_integrantes) + 
   geom_bar(width = 0.10) +
   scale_x_continuous(breaks = seq(0, 10, 1)) +
-  ggtitle("Cantidades de viviendas que presentan cierta cantidad de integrantes") +
+  ggtitle("Cantidades de viviendas que presentan cierta cantidad de integrantes.\nRelevamiento de Condiciones Habitacionales 2022, La Poderosa.") +
   labs(x = "Cantidad de integrantes de la vivienda", y = "Cantidad de viviendas") +
   theme_classic()
 
@@ -55,7 +55,7 @@ datos_analisis %>%
   
   labs(y = "Cantidad de viviendas", x = "Nivel de hacinamiento") + # Nombres de ejes
   
-  ggtitle("Niveles de hacinamiento") +
+  ggtitle("Niveles de hacinamiento, derivados de la cantidad de integrantes de la vivienda\nrelativo a la cantidad de habitaciones.\nRelevamiento de Condiciones Habitacionales 2022, La Poderosa.") +
   
   coord_flip() + # Barras horizontales o verticales
   
@@ -82,7 +82,7 @@ datos_analisis %>%
   
   labs(y = "Cantidad de hogares", x = "Relación con propiedad") + # Nombres de ejes
   
-  ggtitle("Relación del jefe/a de hogar con propiedad") +
+  ggtitle("Relación del jefe/a de hogar con propiedad.\nRelevamiento de Condiciones Habitacionales 2022, La Poderosa.") +
   
   coord_flip() + # Barras horizontales o verticales
   
@@ -113,7 +113,7 @@ respuesta_multiple_table %>%
   
   labs(y = "Cantidad de viviendas", x = "Tipo de plaga") + # Nombres de ejes
   
-  ggtitle("Plagas por viviendas") +
+  ggtitle("Plagas por viviendas.\nRelevamiento de Condiciones Habitacionales 2022, La Poderosa.") +
   
   coord_flip() + # Barras horizontales o verticales
   
