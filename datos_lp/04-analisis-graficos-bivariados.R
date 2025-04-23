@@ -39,8 +39,9 @@ ggplot() +
 ggplot(datos_limpios) +
   aes(x = edad_jefe_del_hogar, y = años_de_residencia) +
   geom_point() +
-  #labs(x = "Número de integrantes del hogar", y = "Número dormitorios")+
-  #ggtitle("Relación entre el número de integrantes del hogar y el número de dormitorios") +
+  labs(x = "Edad de jefa/a del hogar", y = "Años de residencia")+
+  ggtitle("Relación entre la edad de jefe/a del hogar y años de residencia") +
+  geom_smooth(method = "lm") +
   theme_classic()
 
 ##########################

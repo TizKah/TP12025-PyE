@@ -19,6 +19,7 @@ ggplot(datos_limpios) +
                  breaks = c(0,.25,.5,.75,1,2,6)) +
   scale_x_continuous(labels = scales::percent, breaks = c(0,.25,.5,.75,1,2,6)) +
   scale_y_continuous(breaks = c(0,.2,.4,.6), limits=c(0,.6)) +
+  ggtitle("Porcentaje de aumento de alquiler en el último año") +
   labs(x = "Porcentaje de aumento de alquiler", y = "Densidad")
 
 #######################
@@ -29,6 +30,8 @@ ggplot(datos) +
   aes(x = núm_integrantes) + 
   geom_bar(width = 0.10) +
   scale_x_continuous(breaks = seq(0, 10, 1)) +
+  ggtitle("Cantidades de viviendas que presentan cierta cantidad de integrantes") +
+  labs(x = "Cantidad de integrantes de la vivienda", y = "Cantidad de viviendas") +
   theme_classic()
 
 #####################
@@ -50,9 +53,9 @@ datos_analisis %>%
            col = "black",  # Color de línea
            alpha = 0.6) +  # Transparencia
   
-  labs(y = "Cantidad de hogares", x = "Nivel de hacinamiento") + # Nombres de ejes
+  labs(y = "Cantidad de viviendas", x = "Nivel de hacinamiento") + # Nombres de ejes
   
-  ggtitle("Hacinamiento") +
+  ggtitle("Niveles de hacinamiento") +
   
   coord_flip() + # Barras horizontales o verticales
   
@@ -77,9 +80,9 @@ datos_analisis %>%
            col = "black",  # Color de línea
            alpha = 0.6) +  # Transparencia
   
-  labs(y = "Cantidad de hogares", x = "Nivel de hacinamiento") + # Nombres de ejes
+  labs(y = "Cantidad de hogares", x = "Relación con propiedad") + # Nombres de ejes
   
-  ggtitle("Relación con propiedad") +
+  ggtitle("Relación del jefe/a de hogar con propiedad") +
   
   coord_flip() + # Barras horizontales o verticales
   
@@ -108,9 +111,9 @@ respuesta_multiple_table %>%
            col = "black",  # Color de línea
            alpha = 0.6, stat="identity") +  # Transparencia
   
-  labs(y = "Cantidad de hogares", x = "Tipo de plaga") + # Nombres de ejes
+  labs(y = "Cantidad de viviendas", x = "Tipo de plaga") + # Nombres de ejes
   
-  ggtitle("Plagas por hogares") +
+  ggtitle("Plagas por viviendas") +
   
   coord_flip() + # Barras horizontales o verticales
   
@@ -121,4 +124,4 @@ rm(respuesta_multiple_table)
 ##################################
 # Gráfico de sectores circulares #
 ##################################
-table(datos_limpios$hay_plagas) %>% pie()
+table(datos_limpios$hay_plagas) %>% pie(main = "Presencia de plagas")
