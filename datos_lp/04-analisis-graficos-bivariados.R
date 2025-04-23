@@ -14,11 +14,11 @@ attach(datos_limpios)
 ########################
 
 ggplot(datos_limpios) +
-  aes(x = relación_con_propiedad, y = edad_jefe_del_hogar) +
+  aes(x = relación_con_propiedad, y = años_de_residencia) +
   geom_boxplot(show.legend = F, fill = "lightblue") +
-  labs(x = "Relación con propiedad", y = "Edad") +
+  labs(x = "Relación con propiedad", y = "Años de residencia") +
   coord_flip() +
-  ggtitle("Edades de jefe/a del hogar relativo a relación con propiedad") +
+  ggtitle("Años de residencia relativo a relación con propiedad") +
   theme_light()
 
 ####################

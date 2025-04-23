@@ -62,6 +62,33 @@ datos_analisis %>%
 # Gráfico de barras #
 #####################
 
+datos_analisis %>%
+  ggplot() + 
+  
+  #aes(x = hacinamiento) + # Frecuencias absolutas
+  aes(x = relación_con_propiedad) +
+  #aes(x = hacinamiento, y = ..count.. / sum(..count..)) + # Porcentajes
+  # aes(x = reorder(hacinamiento, hacinamiento, function(x) -length(x)), 
+  #		y = ..count.. / sum(..count..)) +  # Porcentajes ordenados según frecuencia
+  #scale_y_continuous(labels = scales::percent) +    # Eje para porcentajes
+  
+  geom_bar(width = 0.75,   # Ancho de barras
+           fill = '#7ed021',  # Color de relleno 
+           col = "black",  # Color de línea
+           alpha = 0.6) +  # Transparencia
+  
+  labs(y = "Cantidad de hogares", x = "Nivel de hacinamiento") + # Nombres de ejes
+  
+  ggtitle("Relación con propiedad") +
+  
+  coord_flip() + # Barras horizontales o verticales
+  
+  theme_classic() # Temas preconfigurados de R https://r-charts.com/ggplot2/themes/
+
+#####################
+# Gráfico de barras #
+#####################
+
 respuesta_multiple_table <- as.data.frame(c(sum(na.omit(plaga_cucaracha)), sum(na.omit(plaga_mosquito)), sum(na.omit(plaga_rata))))
 colnames(respuesta_multiple_table) <- c("Freq")
 rownames(respuesta_multiple_table) <- c("Cucarachas", "Mosquitos", "Ratas")
@@ -94,4 +121,4 @@ rm(respuesta_multiple_table)
 ##################################
 # Gráfico de sectores circulares #
 ##################################
-table(datos_limpios$conviven_personas_con_discapacidades) %>% pie()
+table(datos_limpios$hay_plagas) %>% pie()

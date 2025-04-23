@@ -2,6 +2,9 @@
 # install.packages("googledrive")
 # install.packages("readxl")
 
+library(googledrive)
+library(readxl)
+
 # Descargo el archivo mediante su id de google drive
 # El link de los archivos de drive tiene esta forma:
 # https://docs.google.com/spreadsheets/d/1IRhvzOQkvuspQF3TAsBCI-68i8ya0_hy

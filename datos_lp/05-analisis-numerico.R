@@ -48,6 +48,7 @@ var(núm_integrantes, na.rm = TRUE) # Variancia
 IQR(núm_integrantes, na.rm = TRUE) # Rango intercuartílico
 round(sd(núm_integrantes, na.rm = TRUE)/mean(núm_integrantes, na.rm = TRUE)*100,1) # Coeficiente de variación
 
+sort(table(relación_con_propiedad), decreasing = TRUE)[1] # Moda
 
 sort(table(hacinamiento), decreasing = TRUE)[1] # Moda
 
@@ -58,21 +59,3 @@ rownames(respuesta_multiple_table)[which.max(respuesta_multiple_table$Freq)] # M
 rm(respuesta_multiple_table)
 
 sort(table(conviven_personas_con_discapacidades), decreasing = TRUE)[1] # Moda
-
-# Otras medidas
-var(altura,diametro) # Covariancia
-cor(altura,diametro) # Correlación
-
-# Medidas por grupos
-datos_limpios %>% group_by(especie) %>%
-  summarise(Promedio = median(altura),
-            Desv.Est. = IQR(altura),
-            Mínimo = min(altura),
-            Máximo = max(altura))
-
-# Distribuciones condicionales
-tabyl(datos_limpios, tiempo, follaje) %>%
-  adorn_totals(where = c("row", "col")) %>%
-  adorn_percentages(denominator = "row") %>%
-  adorn_pct_formatting(digits = 1) %>%
-  adorn_title(placement = "top", "Origen", "Tipo de follaje")
