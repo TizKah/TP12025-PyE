@@ -84,6 +84,8 @@ datos_analisis %>%
   
   ggtitle("Relación del jefe/a de hogar con propiedad.\nRelevamiento de Condiciones Habitacionales 2022, La Poderosa.") +
   
+  scale_y_continuous(breaks = seq(0, 1000.0, 250.0), limits = c(0,1000)) +
+  
   coord_flip() + # Barras horizontales o verticales
   
   theme_classic() # Temas preconfigurados de R https://r-charts.com/ggplot2/themes/
