@@ -29,7 +29,9 @@ table(tiene_contrato_de_alquiler, hubo_intento_de_desalojo) %>%
 prop.table(margin=1) %>%
 as.data.frame() %>%
 ggplot() +
+  ggtitle("Existencia de un contrato de alquiler relativo a la ocurrencia de un intento de desalojo.\nRelevamiento de Condiciones Habitacionales 2022, La Poderosa.") +
   aes(x = tiene_contrato_de_alquiler, y = Freq, fill = hubo_intento_de_desalojo) +
+  labs(x = "Tiene contrato de alquiler", fill = "Hubo un intento de desalojo", y = "Proporción")+
   geom_bar(position="stack", stat="identity")
 
 ##########################

@@ -126,4 +126,6 @@ rm(respuesta_multiple_table)
 ##################################
 # Gráfico de sectores circulares #
 ##################################
-table(datos_limpios$hay_plagas) %>% pie(main = "Presencia de plagas")
+table_hay_plagas <- table(datos_limpios$hay_plagas)
+pct <- round(100*table_hay_plagas/sum(table_hay_plagas))
+table_hay_plagas %>% pie(main = "Presencia de plagas.\nRelevamiento de Condiciones Habitacionales 2022, La Poderosa.", labels = paste(names(pct), sep = " ", pct, "%"))
